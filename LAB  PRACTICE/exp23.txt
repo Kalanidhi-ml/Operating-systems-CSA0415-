@@ -1,0 +1,57 @@
+
+#include <stdio.h>
+
+int main() {
+    int b[10], p[10], allocation[10];
+    int nb, np, i, j;
+
+    printf("Enter number of memory blocks: ");
+    scanf("%d", &nb);
+
+    if (nb < 1 || nb > 10) {
+        printf("Invalid number of blocks\n");
+        return 1;
+    }
+
+    printf("Enter sizes of memory blocks:\n");
+    for (i = 0; i < nb; i++)
+        scanf("%d", &b[i]);
+
+    printf("Enter number of processes: ");
+    scanf("%d", &np);
+
+    if (np < 1 || np > 10) {
+        printf("Invalid number of processes\n");
+        return 1;
+    }
+
+    printf("Enter sizes of processes:\n");
+    for (i = 0; i < np; i++) {
+        scanf("%d", &p[i]);
+        allocation[i] = -1;
+    }
+
+    for (i = 0; i < np; i++) {
+        for (j = 0; j < nb; j++) {
+            if (b[j] >= p[i]) {
+                allocation[i] = j;
+                b[j] -= p[i];
+                break;
+            }
+        }
+    }
+
+    printf("\n%-12s %-12s %-15s\n",
+           "Process", "Size", "Block");
+
+    for (i = 0; i < np; i++) {
+        printf("P%-11d %-12d ", i + 1, p[i]);
+
+        if (allocation[i] != -1)
+            printf("%d\n", allocation[i] + 1);
+        else
+            printf("Not Allocated\n");
+    }
+
+    return 0;
+}
