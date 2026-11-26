@@ -1,0 +1,96 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    FILE *fp = NULL;
+    int choice, ch;
+
+    do {
+        printf("\n1. Create File\n");
+        printf("2. Write File\n");
+        printf("3. Read File\n");
+        printf("4. Append File\n");
+        printf("5. Delete File\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1)
+            break;
+
+        switch (choice) {
+            case 1:
+                if (fp != NULL)
+                    fclose(fp);
+
+                fp = tmpfile();
+
+                if (fp == NULL)
+                    perror("File creation failed");
+                else
+                    printf("File created successfully\n");
+                break;
+
+            case 2:
+                if (fp == NULL) {
+                    printf("Create file first\n");
+                    break;
+                }
+
+                rewind(fp);
+                fprintf(fp, "Hello World");
+                fflush(fp);
+                printf("Data written successfully\n");
+                break;
+
+            case 3:
+                if (fp == NULL) {
+                    printf("Create file first\n");
+                    break;
+                }
+
+                rewind(fp);
+                printf("File Content: ");
+
+                while ((ch = fgetc(fp)) != EOF)
+                    putchar(ch);
+
+                printf("\n");
+                break;
+
+            case 4:
+                if (fp == NULL) {
+                    printf("Create file first\n");
+                    break;
+                }
+
+                fseek(fp, 0, SEEK_END);
+                fprintf(fp, " Welcome");
+                fflush(fp);
+                printf("Data appended successfully\n");
+                break;
+
+            case 5:
+                if (fp == NULL) {
+                    printf("File does not exist\n");
+                } else {
+                    fclose(fp);
+                    fp = NULL;
+                    printf("File deleted successfully\n");
+                }
+                break;
+
+            case 6:
+                if (fp != NULL)
+                    fclose(fp);
+                printf("Program exited\n");
+                break;
+
+            default:
+                printf("Invalid choice\n");
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
