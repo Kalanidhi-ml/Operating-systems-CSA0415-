@@ -1,0 +1,30 @@
+
+#include <stdio.h>
+#include <dirent.h>
+
+int main() {
+    DIR *dir;
+    struct dirent *entry;
+    int count = 0;
+
+    dir = opendir(".");
+
+    if (dir == NULL) {
+        perror("Error opening directory");
+        return 1;
+    }
+
+    printf("Files and Directories:\n");
+
+    while ((entry = readdir(dir)) != NULL) {
+        printf("%s\n", entry->d_name);
+        count++;
+    }
+
+    if (count == 0)
+        printf("Directory is empty\n");
+
+    closedir(dir);
+
+    return 0;
+}
