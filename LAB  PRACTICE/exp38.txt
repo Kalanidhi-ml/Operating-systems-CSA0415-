@@ -1,0 +1,71 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int req[20], n, head, size, i, j;
+    int total = 0, temp;
+
+    printf("Enter number of requests: ");
+    scanf("%d", &n);
+
+    printf("Enter disk requests:\n");
+    for(i = 0; i < n; i++)
+        scanf("%d", &req[i]);
+
+    printf("Enter initial head position: ");
+    scanf("%d", &head);
+
+    printf("Enter disk size: ");
+    scanf("%d", &size);
+
+    // Sort requests
+    for(i = 0; i < n - 1; i++)
+    {
+        for(j = 0; j < n - i - 1; j++)
+        {
+            if(req[j] > req[j + 1])
+            {
+                temp = req[j];
+                req[j] = req[j + 1];
+                req[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\nDisk head movement:\n");
+
+    // Move towards higher cylinder numbers
+    for(i = 0; i < n; i++)
+    {
+        if(req[i] >= head)
+        {
+            total += abs(req[i] - head);
+            printf("%d -> ", head);
+            head = req[i];
+        }
+    }
+
+    // Move to the end of the disk
+    total += abs((size - 1) - head);
+    printf("%d -> ", size - 1);
+    head = size - 1;
+
+    // Reverse direction
+    for(i = n - 1; i >= 0; i--)
+    {
+        if(req[i] < head && req[i] < size)
+        {
+            total += abs(req[i] - head);
+            printf("%d -> ", head);
+            head = req[i];
+        }
+    }
+
+    printf("%d\n", head);
+
+    printf("\nTotal head movement = %d\n", total);
+
+    return 0;
+}
